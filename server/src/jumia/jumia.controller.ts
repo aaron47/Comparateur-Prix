@@ -1,7 +1,17 @@
-import { Controller, Get, Inject, Logger, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Logger,
+  Param,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
+import { JumiaInterceptor } from 'src/interceptors/Jumia.interceptor';
 import { Produits } from './../models';
 import { IJumiaService } from './ijumia';
 
+@UseInterceptors(JumiaInterceptor)
 @Controller('jumia/products')
 export class JumiaController {
   private readonly logger = new Logger(JumiaController.name);

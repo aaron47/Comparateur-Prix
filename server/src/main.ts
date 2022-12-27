@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -11,9 +12,12 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.setGlobalPrefix(globalPrefix);
-  await app.listen(process.env.PORT, () => {
+  const configService = app.get(ConfigService);
+  await app.listen(configService.get<number>('PORT'), () => {
     Logger.log(
-      `Server running on port http://localhost:${process.env.PORT}/${globalPrefix}`,
+      `Server running on port http://localhost:${configService.get<number>(
+        'PORT',
+      )}/${globalPrefix}`,
     );
   });
 }

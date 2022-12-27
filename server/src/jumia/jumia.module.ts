@@ -4,12 +4,15 @@ import { Produits, ProduitsSchema } from './../models';
 import { JumiaController } from './jumia.controller';
 import { JumiaRepository } from './jumia.repository';
 import { JumiaService } from './jumia.service';
+import { UsersModule } from 'src/users/users.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Produits.name, schema: ProduitsSchema },
     ]),
+    UsersModule,
   ],
   controllers: [JumiaController],
   providers: [

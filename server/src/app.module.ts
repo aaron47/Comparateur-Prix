@@ -1,11 +1,14 @@
+import { JumiaInterceptor } from './interceptors/Jumia.interceptor';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { JumiaModule } from './jumia/jumia.module';
 import { TunisianetModule } from './tunisianet/tunisianet.module';
+import { AuthModule } from './auth/auth.module';
 import * as Joi from 'joi';
+import { JwtAuthGuard } from './auth/common/guards';
 
 @Module({
   imports: [
@@ -16,6 +19,10 @@ import * as Joi from 'joi';
         PORT: Joi.number().required(),
         THROTTLE_TTL: Joi.number().required(),
         THROTTLE_LIMIT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRES_IN: Joi.string().required(),
+        REFRESH_SECRET: Joi.string().required(),
+        REFRESH_EXPIRES_IN: Joi.string().required(),
       }),
     }),
     MongooseModule.forRootAsync({
@@ -37,12 +44,17 @@ import * as Joi from 'joi';
     }),
     JumiaModule,
     TunisianetModule,
+    AuthModule,
   ],
 
   providers: [
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
 })

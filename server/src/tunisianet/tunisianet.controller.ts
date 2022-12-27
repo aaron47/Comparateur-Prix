@@ -1,7 +1,9 @@
 import { TunisianetProduits } from './../models';
-import { Controller, Get, Inject, Logger, Param, Query } from '@nestjs/common';
+import { Controller, Get, Inject, Logger, Param, Query, UseInterceptors } from '@nestjs/common';
 import { ITunisianetService } from './itunisianet';
+import { TunisianetInterceptor } from 'src/interceptors';
 
+@UseInterceptors(TunisianetInterceptor)
 @Controller('tunisianet/products')
 export class TunisianetController {
   private readonly logger = new Logger(TunisianetController.name);
