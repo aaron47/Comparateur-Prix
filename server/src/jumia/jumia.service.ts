@@ -12,7 +12,7 @@ export class JumiaService implements IJumiaService {
   }
 
   async getJumiaProductById(productId: string): Promise<Produits> {
-    return this.jumiaRepository.findOneById({ productId });
+    return this.jumiaRepository.findOneById({ _id: productId });
   }
 
   async getSortedJumiaProducts(sortBy: 'asc' | 'desc'): Promise<Produits[]> {

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+body {
+  @apply text-gray-100 bg-gray-800 font-['Montserrat'];
+}
+
+.input {
+  @apply placeholder-[#4b2354] text-[#4b2354] shadow-md shadow-black/20 p-4 rounded-[10px] transition duration-300 focus:shadow-black/50 hover:shadow-black/50 outline-none;
+}
+
+.label {
+  @apply text-[#4b2354] font-bold text-lg italic;
+}
+
+.login-button {
+  @apply bg-[#bd59d4] text-center md:p-4 p-2 transition duration-300 hover:bg-[#4b2354] rounded-full text-white font-bold text-lg hover:text-gray-300 w-[60%] md:my-8 my-4 active:bg-[#4b2354] active:text-gray-300;
+}
+
+.signup-button {
+  @apply bg-[#bd59d4] text-center md:p-4 p-2 transition duration-300 hover:bg-[#4b2354] rounded-full text-white font-bold md:text-lg text-sm hover:text-gray-300 w-[60%] my-0 active:bg-[#4b2354] active:text-gray-300;
+}
+
+.btn {
+  @apply bg-[#bd59d4] text-center p-4 transition duration-300 hover:bg-[#4b2354] rounded-full text-white font-bold text-lg hover:text-gray-300 w-[60%];
+}

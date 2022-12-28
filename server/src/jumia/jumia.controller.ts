@@ -7,11 +7,13 @@ import {
   Query,
   UseInterceptors,
 } from '@nestjs/common';
+import { Public } from 'src/auth/common/decorators';
 import { JumiaInterceptor } from 'src/interceptors/Jumia.interceptor';
 import { Produits } from './../models';
 import { IJumiaService } from './ijumia';
 
-@UseInterceptors(JumiaInterceptor)
+// @UseInterceptors(JumiaInterceptor)
+@Public()
 @Controller('jumia/products')
 export class JumiaController {
   private readonly logger = new Logger(JumiaController.name);

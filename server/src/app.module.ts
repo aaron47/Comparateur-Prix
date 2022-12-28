@@ -34,24 +34,23 @@ import { JwtAuthGuard } from './auth/common/guards';
         useUnifiedTopology: true,
       }),
     }),
-    ThrottlerModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        ttl: configService.get<number>('THROTTLE_TTL'),
-        limit: configService.get<number>('THROTTLE_LIMIT'),
-      }),
-    }),
+    // ThrottlerModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     ttl: configService.get<number>('THROTTLE_TTL'),
+    //     limit: configService.get<number>('THROTTLE_LIMIT'),
+    //   }),
+    // }),
     JumiaModule,
     TunisianetModule,
     AuthModule,
   ],
-
   providers: [
-    {
-      provide: APP_GUARD,
-      useClass: ThrottlerGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: ThrottlerGuard,
+    // },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

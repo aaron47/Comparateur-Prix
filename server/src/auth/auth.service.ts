@@ -100,7 +100,7 @@ export class AuthService implements IAuthService {
 
   async logout(res: Response, userId: string): Promise<void> {
     await this.usersService.findOneAndUpdate(
-      { userId },
+      { _id: userId },
       { hashedRefreshToken: null },
     );
 
