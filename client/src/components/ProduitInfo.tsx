@@ -1,19 +1,17 @@
+import axios from 'axios';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { truncateString } from '../App';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { setProduit } from '../features/ProduitsSlice';
+import { setProduit, setProduits } from '../features/ProduitsSlice';
+import { BASE_LINK } from '../utils/Baselink';
+import { Produit } from '../utils/Produit';
 
 const ProduitInfo = () => {
   const { id } = useParams<{ id: string }>();
   const produits = useAppSelector((state) => state.produits.produits);
   const dispatch = useAppDispatch();
-
-  let produitDePage = produits.find((produit) => produit._id === id);
-
-  if (produitDePage) {
-    dispatch(setProduit(produitDePage));
-  }
-
+  const produitDePage = useAppSelector((state) => state.produits.produit);
 
   const produitsMoinsChers = produits
     .filter((produit) => produit.price <= produitDePage!.price)
@@ -23,11 +21,27 @@ const ProduitInfo = () => {
     })
     .splice(0, 6);
 
-  console.log(produitsMoinsChers);
+  const fetchProduit = async () => {
+    const data = await axios
+      .get<Produit>(`${BASE_LINK}/allproducts/${id}`)
+      .then((res) => res.data);
+    dispatch(setProduit(data));
+  };
+
+  const fetchProduits = async () => {
+    const allProducts = await axios.get<Produit[]>(`${BASE_LINK}/allproducts`);
+
+    dispatch(setProduits(allProducts.data));
+  };
+
+  useEffect(() => {
+    fetchProduit();
+    fetchProduits();
+  }, []);
 
   return (
     <div className="flex items-center justify-center md:h-screen">
-      <div className="bg-white text-black rounded-md">
+      <div className="bg-white text-black rounded-md my-8">
         <div className="flex justify-center items-center md:p-8 p-4 space-x-4 md:w-[600px] w-[300px] h-fit">
           <div>
             <img
@@ -60,7 +74,7 @@ const ProduitInfo = () => {
           {produitsMoinsChers.map((produit) => (
             <div
               key={produit._id}
-              className="h-fit  md:w-[200px] w-[100px] p-4 space-y-2  space-x-8 md:space-x-0 flex md:flex-col justify-center items-center"
+              className="h-fit md:w-[200px] w-fit p-4 space-y-2 space-x-6 md:space-x-0 flex md:flex-col justify-center items-center"
             >
               <img
                 className="w-[100px] h-[100px]"

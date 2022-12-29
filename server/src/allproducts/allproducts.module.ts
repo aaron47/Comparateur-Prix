@@ -1,10 +1,16 @@
-import { JumiaModule } from './../jumia/jumia.module';
+import { TousProduits, TousProduitsSchema } from './../models';
 import { Module } from '@nestjs/common';
 import { AllproductsController } from './allproducts.controller';
-import { TunisianetModule } from 'src/tunisianet/tunisianet.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AllproductsRepository } from './allproducts.repository';
 
 @Module({
-  imports: [JumiaModule, TunisianetModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: TousProduits.name, schema: TousProduitsSchema },
+    ]),
+  ],
   controllers: [AllproductsController],
+  providers: [AllproductsRepository],
 })
 export class AllproductsModule {}

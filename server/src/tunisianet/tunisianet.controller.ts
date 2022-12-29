@@ -1,11 +1,17 @@
 import { TunisianetProduits } from './../models';
-import { Controller, Get, Inject, Logger, Param, Query, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Logger,
+  Param,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ITunisianetService } from './itunisianet';
 import { TunisianetInterceptor } from 'src/interceptors';
-import { Public } from 'src/auth/common/decorators';
 
-// @UseInterceptors(TunisianetInterceptor)
-@Public()
+@UseInterceptors(TunisianetInterceptor)
 @Controller('tunisianet/products')
 export class TunisianetController {
   private readonly logger = new Logger(TunisianetController.name);
@@ -16,7 +22,9 @@ export class TunisianetController {
   ) {}
 
   @Get('all')
-  async getTunisianetProducts(@Query('limit') limit?: number): Promise<TunisianetProduits[]> {
+  async getTunisianetProducts(
+    @Query('limit') limit?: number,
+  ): Promise<TunisianetProduits[]> {
     this.logger.log('Logging all products');
     return this.tunisianetService.getTunisianetProducts(limit);
   }

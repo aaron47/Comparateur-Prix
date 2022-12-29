@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Produit } from './utils/Produit';
 import axios from 'axios';
 import ProduitItem from './components/ProduitItem';
@@ -16,21 +16,46 @@ export const truncateString = (str: string, num?: number): string => {
 };
 
 const App = () => {
-  // const [produits, setProduits] = useState<Produit[]>([]);
   const produits = useAppSelector((state) => state.produits.produits);
   const user = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [logout] = useLogoutMutation();
+  const [option, setOption] = useState('');
 
-  const fetchProduits = async () => {
-    const allProducts = await axios.get<Produit[]>(`${BASE_LINK}/allproducts`);
+  const fetchProduits = async (option?: string) => {
+    // let allProducts = await axios.get<Produit[]>(`${BASE_LINK}/allproducts`);
+    let allProducts: Produit[] | undefined = undefined;
 
-    dispatch(setProduits(allProducts.data));
+    if (option === 'asc') {
+      allProducts = await axios
+        .get<Produit[]>(`${BASE_LINK}/allproducts/sort/asc`)
+        .then((res) => res.data);
+    } else if (option === 'desc') {
+      allProducts = await axios
+        .get<Produit[]>(`${BASE_LINK}/allproducts/sort/desc`)
+        .then((res) => res.data);
+    } else if (option === 'jumia') {
+      allProducts = await axios
+        .get<Produit[]>(`${BASE_LINK}/allproducts/manufacturer/jumia`)
+        .then((res) => res.data);
+    } else if (option === 'tunisianet') {
+      allProducts = await axios
+        .get<Produit[]>(`${BASE_LINK}/allproducts/manufacturer/tunisianet`)
+        .then((res) => res.data);
+    } else {
+      allProducts = await axios
+        .get<Produit[]>(`${BASE_LINK}/allproducts`)
+        .then((res) => res.data);
+    }
+
+    dispatch(setProduits(allProducts!));
   };
 
   useEffect(() => {
-    fetchProduits();
-  }, []);
+    fetchProduits(option);
+  }, [option]);
+
+  useEffect(() => {}, [option]);
 
   const handleLogout = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -47,13 +72,55 @@ const App = () => {
 
   return (
     <div className="flex flex-col space-y-6 relative">
+      {!user.user.email && (
+        <div className="absolute md:top-8 top-2 md:left-[5%] left-[2%] md:w-[200px] ">
+          <label
+            htmlFor="small"
+            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >
+            Selectionnez Ordre
+          </label>
+          <select
+            id="small"
+            className="w-[100px] md:w-[200px] p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            onChange={(e) => setOption(e.target.value)}
+          >
+            <option defaultValue="">Tous</option>
+            <option value="asc">Ordre Ascendant</option>
+            <option value="desc">Ordre Descendant</option>
+            <option value="jumia">Par producteur Jumia</option>
+            <option value="tunisianet">Par producteur Tunisianet</option>
+          </select>
+        </div>
+      )}
       {user.user.email && (
-        <p className="absolute md:top-10 top-4 md:left-10 left-4 text-sm md:text-xl">
-          Bonjour,
-          <span className="md:px-2 px-1 underline italic font-bold text-[#ffa10a]">
-            {user.user.email?.split('@')[0]}
-          </span>
-        </p>
+        <div>
+          <div className="absolute top-8 md:left-[23%] w-[200px]">
+            <label
+              htmlFor="small"
+              className="block mb-2 md:text-sm text-xs font-medium text-gray-900 dark:text-white"
+            >
+              Selectionnez Ordre
+            </label>
+            <select
+              id="small"
+              className="w-[100px] p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(e) => setOption(e.target.value)}
+            >
+              <option defaultValue="">Tous</option>
+              <option value="asc">Ordre Ascendant</option>
+              <option value="desc">Ordre Descendant</option>
+              <option value="jumia">Par producteur Jumia</option>
+              <option value="tunisianet">Par producteur Tunisianet</option>
+            </select>
+          </div>
+          <p className="absolute md:top-10 top-4 md:left-10 left-4 text-sm md:text-xl">
+            Bonjour,
+            <span className="md:px-2 px-1 underline italic font-bold text-[#ffa10a]">
+              {user.user.email?.split('@')[0]}
+            </span>
+          </p>
+        </div>
       )}
 
       <div>

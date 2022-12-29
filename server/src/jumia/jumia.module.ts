@@ -5,7 +5,6 @@ import { JumiaController } from './jumia.controller';
 import { JumiaRepository } from './jumia.repository';
 import { JumiaService } from './jumia.service';
 import { UsersModule } from 'src/users/users.module';
-import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
