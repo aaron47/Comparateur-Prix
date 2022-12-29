@@ -21,5 +21,6 @@ import { UsersModule } from 'src/users/users.module';
     },
     TunisianetRepository,
   ],
+  exports: [TunisianetRepository],
 })
 export class TunisianetModule {}

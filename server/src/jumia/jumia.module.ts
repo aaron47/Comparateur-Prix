@@ -22,5 +22,6 @@ import { AuthModule } from 'src/auth/auth.module';
     },
     JumiaRepository,
   ],
+  exports: [JumiaRepository],
 })
 export class JumiaModule {}

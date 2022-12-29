@@ -14,6 +14,7 @@ const initialState: ProduitsState = {
     imgSrc: '',
     price: 0,
     productLink: '',
+    manufacturer: '',
   },
 };
 
@@ -30,5 +31,5 @@ export const produitsSlice = createSlice({
   },
 });
 
-export const { setProduits, setProduit} = produitsSlice.actions;
+export const { setProduits, setProduit } = produitsSlice.actions;
 export default produitsSlice.reducer;

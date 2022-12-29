@@ -14,6 +14,9 @@ export class Produits extends Document {
 
   @Prop()
   price: number;
+
+  @Prop()
+  manufacturer: string;
 }
 
 export const ProduitsSchema = SchemaFactory.createForClass(Produits);

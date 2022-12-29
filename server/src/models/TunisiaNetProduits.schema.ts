@@ -1,4 +1,4 @@
-import { Prop, SchemaFactory, Schema} from '@nestjs/mongoose';
+import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
 @Schema({ versionKey: false })
@@ -14,6 +14,9 @@ export class TunisianetProduits extends Document {
 
   @Prop()
   price: number;
+
+  @Prop()
+  manufacturer: string;
 }
 
 export const TunisianetProduitsSchema =

@@ -9,6 +9,7 @@ import { TunisianetModule } from './tunisianet/tunisianet.module';
 import { AuthModule } from './auth/auth.module';
 import * as Joi from 'joi';
 import { JwtAuthGuard } from './auth/common/guards';
+import { AllproductsModule } from './allproducts/allproducts.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { JwtAuthGuard } from './auth/common/guards';
     JumiaModule,
     TunisianetModule,
     AuthModule,
+    AllproductsModule,
   ],
   providers: [
     // {

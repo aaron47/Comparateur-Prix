@@ -8,20 +8,22 @@ const ProduitInfo = () => {
   const produits = useAppSelector((state) => state.produits.produits);
   const dispatch = useAppDispatch();
 
-  const produitDePage = produits.find((produit) => produit._id === id);
+  let produitDePage = produits.find((produit) => produit._id === id);
 
   if (produitDePage) {
     dispatch(setProduit(produitDePage));
   }
 
+
   const produitsMoinsChers = produits
     .filter((produit) => produit.price <= produitDePage!.price)
     .filter((produit) => {
-      if (produitDePage!.title.includes(produit.title.slice(0, 11))) {
+      if (produitDePage?.manufacturer !== produit.manufacturer)
         return produit._id !== produitDePage!._id;
-      }
     })
     .splice(0, 6);
+
+  console.log(produitsMoinsChers);
 
   return (
     <div className="flex items-center justify-center md:h-screen">

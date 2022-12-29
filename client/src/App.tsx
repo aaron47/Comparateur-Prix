@@ -23,14 +23,9 @@ const App = () => {
   const [logout] = useLogoutMutation();
 
   const fetchProduits = async () => {
-    const jumiaProduits = await axios.get<Produit[]>(
-      `${BASE_LINK}/jumia/products/all`
-    );
-    const tunisianetProduits = await axios.get<Produit[]>(
-      `${BASE_LINK}/tunisianet/products/all`
-    );
+    const allProducts = await axios.get<Produit[]>(`${BASE_LINK}/allproducts`);
 
-    dispatch(setProduits([...jumiaProduits.data, ...tunisianetProduits.data]));
+    dispatch(setProduits(allProducts.data));
   };
 
   useEffect(() => {
@@ -44,7 +39,7 @@ const App = () => {
     await logout(undefined)
       .then(() => {
         localStorage.clear();
-        dispatch(logoutUser())
+        dispatch(logoutUser());
         window.location.reload();
       })
       .catch((err) => console.log(err));
