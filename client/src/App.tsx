@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Produit } from './utils/Produit';
 import axios from 'axios';
 import ProduitItem from './components/ProduitItem';
@@ -76,9 +76,14 @@ const App = () => {
       )}
 
       {!user.user.email && (
-        <button className="absolute md:-top-2 -top-3  md:right-10 right-0 border border-[#ffa10a] bg-transparent md:p-4 p-2 rounded-md md:text-xl text-xs hover:bg-[#ffa10a] hover:text-white transition duration-200 active:bg-[#ffa10a] active:text-white">
-          <Link to="/signup">N'as pas de compte?</Link>
-        </button>
+        <Link
+          className="absolute md:-top-2 -top-3  md:right-10 right-0 "
+          to="/signup"
+        >
+          <button className="border border-[#ffa10a] bg-transparent md:p-4 p-2 rounded-md md:text-xl text-xs hover:bg-[#ffa10a] hover:text-white transition duration-200 active:bg-[#ffa10a] active:text-white">
+            N'as pas de compte?
+          </button>
+        </Link>
       )}
     </div>
   );
