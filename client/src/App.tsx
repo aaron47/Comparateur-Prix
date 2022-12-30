@@ -55,7 +55,6 @@ const App = () => {
     fetchProduits(option);
   }, [option]);
 
-  useEffect(() => {}, [option]);
 
   const handleLogout = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -73,7 +72,7 @@ const App = () => {
   return (
     <div className="flex flex-col space-y-6 relative">
       {!user.user.email && (
-        <div className="absolute md:top-8 top-2 md:left-[5%] left-[2%] md:w-[200px] ">
+        <div className="absolute md:top-3 top-2 md:left-3 left-[2%] md:w-[200px] ">
           <label
             htmlFor="small"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -144,7 +143,7 @@ const App = () => {
 
       {!user.user.email && (
         <Link
-          className="absolute md:-top-2 -top-3  md:right-10 right-0 "
+          className="absolute md:-top-2 -top-3  md:right-5 right-0 "
           to="/signup"
         >
           <button className="border border-[#ffa10a] bg-transparent md:p-4 p-2 rounded-md md:text-xl text-xs hover:bg-[#ffa10a] hover:text-white transition duration-200 active:bg-[#ffa10a] active:text-white">

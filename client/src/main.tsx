@@ -1,9 +1,9 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import { store } from './app/store';
+import { Contact } from './components/Contact';
 import Login from './components/Login';
 import ProduitInfo from './components/ProduitInfo';
 import Signup from './components/Signup';
@@ -25,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: '/produits/:id',
     element: <ProduitInfo />,
+  },
+  {
+    path: 'contact',
+    element: <Contact />,
   },
 ]);
 

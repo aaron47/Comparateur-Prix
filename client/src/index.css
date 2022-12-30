@@ -27,3 +27,7 @@ body {
 .btn {
   @apply bg-[#bd59d4] text-center p-4 transition duration-300 hover:bg-[#4b2354] rounded-full text-white font-bold text-lg hover:text-gray-300 w-[60%];
 }
+
+input, textarea {
+  @apply outline-none;
+}
