@@ -55,7 +55,6 @@ const App = () => {
     fetchProduits(option);
   }, [option]);
 
-
   const handleLogout = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
@@ -103,7 +102,7 @@ const App = () => {
             </label>
             <select
               id="small"
-              className="w-[100px] p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="w-[100px] md:w-[200px] p-2 mb-6 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               onChange={(e) => setOption(e.target.value)}
             >
               <option defaultValue="">Tous</option>
@@ -123,6 +122,13 @@ const App = () => {
       )}
 
       <div>
+        <div className="flex justify-center items-center text-center">
+          <Link to="/contact">
+            <button className="bg-[#ffb641] text-center md:w-full w-[150px] md:p-4 p-2 transition duration-300 hover:bg-[#ffa10a] rounded-full  text-white font-bold text-sm hover:text-gray-300">
+              Avez vous un probleme? Contactez Nous!
+            </button>
+          </Link>
+        </div>
         <h3 className="text-center md:text-4xl text-xl p-4">Nos Produits</h3>
         <div className="md:w-[200px] w-[80px] bg-[#ffa10a] h-[5px] mx-auto -mt-2 rounded-md" />
       </div>
