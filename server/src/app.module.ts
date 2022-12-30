@@ -1,5 +1,4 @@
-import { JumiaInterceptor } from './interceptors/Jumia.interceptor';
-import { Module } from '@nestjs/common';
+import { CacheModule, Module, CacheInterceptor } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -8,6 +7,7 @@ import { JumiaModule } from './jumia/jumia.module';
 import { TunisianetModule } from './tunisianet/tunisianet.module';
 import { AuthModule } from './auth/auth.module';
 import * as Joi from 'joi';
+import { redisStore } from 'cache-manager-redis-store';
 import { JwtAuthGuard } from './auth/common/guards';
 import { AllproductsModule } from './allproducts/allproducts.module';
 
@@ -35,27 +35,43 @@ import { AllproductsModule } from './allproducts/allproducts.module';
         useUnifiedTopology: true,
       }),
     }),
-    // ThrottlerModule.forRootAsync({
-    //   imports: [ConfigModule],
-    //   inject: [ConfigService],
-    //   useFactory: async (configService: ConfigService) => ({
-    //     ttl: configService.get<number>('THROTTLE_TTL'),
-    //     limit: configService.get<number>('THROTTLE_LIMIT'),
-    //   }),
-    // }),
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        ttl: configService.get<number>('THROTTLE_TTL'),
+        limit: configService.get<number>('THROTTLE_LIMIT'),
+      }),
+    }),
+    CacheModule.register({
+      // @ts-ignore
+      store: async () =>
+        await redisStore({
+          // Store-specific configuration:
+          socket: {
+            host: 'localhost',
+            port: 6379,
+          },
+        }),
+      isGlobal: true,
+    }),
     JumiaModule,
     TunisianetModule,
     AuthModule,
     AllproductsModule,
   ],
   providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: ThrottlerGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: CacheInterceptor,
     },
   ],
 })

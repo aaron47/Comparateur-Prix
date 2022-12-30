@@ -5,7 +5,9 @@ export abstract class AbstractRepository<T> {
   constructor(protected readonly model: Model<T>) {}
 
   async findAll(filterQuery: FilterQuery<T>, limit?: number): Promise<T[]> {
-    if (limit) return this.model.find(filterQuery, {}, { lean: true, limit });
+    if (limit) {
+      this.model.find(filterQuery, {}, { lean: true, limit });
+    }
 
     return this.model.find(filterQuery, {}, { lean: true });
   }
