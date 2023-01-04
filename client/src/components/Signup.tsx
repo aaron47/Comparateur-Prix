@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSignUpMutation } from '../services/usersApi';
 import { CreateUserRequest } from '../utils/CreateUserRequest';
+import { ToastOptions, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Signup = () => {
   const [signUpInfo, setSignUpInfo] = useState<CreateUserRequest>({
@@ -11,6 +13,14 @@ const Signup = () => {
   });
   const [signUp] = useSignUpMutation();
   const navigate = useNavigate();
+
+  const toastOptions: Partial<ToastOptions> = {
+    position: 'bottom-right',
+    autoClose: 1200,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'light',
+  };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,7 +36,7 @@ const Signup = () => {
         navigate('/');
         return res;
       })
-      .catch((err) => console.log(err));
+      .catch((err: any) => toast.error(err.data.message[0], toastOptions));
   };
 
   return (
@@ -97,6 +107,7 @@ const Signup = () => {
           </p>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

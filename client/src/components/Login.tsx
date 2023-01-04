@@ -5,6 +5,8 @@ import { setUser } from '../features/UsersSlice';
 import { useLoginMutation } from '../services/usersApi';
 import { AuthResponse } from '../utils/AuthResponse';
 import { LoginRequest } from '../utils/LoginRequest';
+import { ToastOptions, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [loginInfo, setLoginInfo] = useState<LoginRequest>({
@@ -14,6 +16,13 @@ const Login = () => {
   const [login] = useLoginMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const toastOptions: Partial<ToastOptions> = {
+    position: 'bottom-right',
+    autoClose: 1200,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'light',
+  };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,11 +35,14 @@ const Login = () => {
         console.log(res);
         localStorage.setItem('jwt', res.access_token!);
         localStorage.setItem('refresh', res.access_token!);
+        localStorage.setItem('userId', res._id);
         dispatch(setUser(res));
         navigate('/');
         return res;
       })
-      .catch((err) => console.log(err))) as AuthResponse;
+      .catch((err) =>
+        toast.error(err.data.message, toastOptions)
+      )) as AuthResponse;
   };
 
   return (
@@ -84,6 +96,7 @@ const Login = () => {
           </p>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

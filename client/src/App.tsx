@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks';
 import { setProduits } from './features/ProduitsSlice';
 import { Link } from 'react-router-dom';
 import { useLogoutMutation } from './services/usersApi';
-import { logoutUser } from './features/UsersSlice';
+import { logoutUser, setUser } from './features/UsersSlice';
 
 export const truncateString = (str: string, num?: number): string => {
   if (num) return str.slice(0, num) + '...';
@@ -53,7 +53,20 @@ const App = () => {
 
   useEffect(() => {
     fetchProduits(option);
+    fetchServerSideUser();
   }, [option]);
+
+  const fetchServerSideUser = async () => {
+    const userId = localStorage.getItem('userId');
+
+    return axios
+      .get(`${BASE_LINK}/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        },
+      })
+      .then((res) => dispatch(setUser(res.data)));
+  };
 
   const handleLogout = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -65,7 +78,7 @@ const App = () => {
         dispatch(logoutUser());
         window.location.reload();
       })
-      .catch((err) => console.log(err));
+      .catch((err: any) => console.log(err));
   };
 
   return (
@@ -93,7 +106,7 @@ const App = () => {
       )}
       {user.user.email && (
         <div>
-          <div className="absolute top-8 md:left-[23%] w-[200px]">
+          <div className="absolute md:top-8 top-10 left-[5%]  md:left-[23%] w-[200px]">
             <label
               htmlFor="small"
               className="block mb-2 md:text-sm text-xs font-medium text-gray-900 dark:text-white"
@@ -112,12 +125,18 @@ const App = () => {
               <option value="tunisianet">Par producteur Tunisianet</option>
             </select>
           </div>
-          <p className="absolute md:top-10 top-4 md:left-10 left-4 text-sm md:text-xl">
-            Bonjour,
-            <span className="md:px-2 px-1 underline italic font-bold text-[#ffa10a]">
-              {user.user.email?.split('@')[0]}
+          <div className="absolute md:top-10 top-4 md:left-10 left-2 max-w-[200px]">
+            <p className="text-sm md:text-xl">
+              Bonjour,
+              <span className="text-xs md:px-2 px-1 underline italic font-bold text-[#ffa10a]">
+                {user.user.email?.split('@')[0]}
+              </span>
+            </p>
+
+            <span className="md:block hidden break-word">
+              Votre Carte de fidelite: {user.user.carteFidelite}
             </span>
-          </p>
+          </div>
         </div>
       )}
 
@@ -141,7 +160,7 @@ const App = () => {
       {user.user.email && (
         <button
           onClick={handleLogout}
-          className="absolute top-2 right-10 border border-[#ffa10a] bg-transparent p-4 rounded-md text-xl hover:bg-[#ffa10a] hover:text-white transition duration-200"
+          className="absolute top-2 md:right-10 right-6 border border-[#ffa10a] bg-transparent p-4 rounded-md text-xl hover:bg-[#ffa10a] hover:text-white transition duration-200"
         >
           Logout
         </button>
